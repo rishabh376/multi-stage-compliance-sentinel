@@ -1,0 +1,8 @@
+groups:
+- name: multi-stage-compliance-sentinel
+  rules:
+  - alert: HighErrorRate
+    expr: rate(requests_total[5m]) > 5
+    for: 5m
+    labels: {severity: warning}
+    annotations: {summary: "High request rate on multi-stage-compliance-sentinel"}

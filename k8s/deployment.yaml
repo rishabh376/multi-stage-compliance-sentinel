@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multi-stage-compliance-sentinel
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: multi-stage-compliance-sentinel
+  template:
+    metadata:
+      labels:
+        app: multi-stage-compliance-sentinel
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/example/multi-stage-compliance-sentinel:latest
+        ports:
+        - containerPort: 8080
+        livenessProbe: { httpGet: { path: /healthz, port: 8080 } }
+        readinessProbe: { httpGet: { path: /healthz, port: 8080 } }

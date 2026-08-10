@@ -1,0 +1,21 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: multi-stage-compliance-sentinel-require-signed-images
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+  - name: require-cosign-signature
+    match:
+      any:
+      - resources:
+          kinds: ["Pod"]
+    verifyImages:
+    - imageReferences:
+      - "ghcr.io/example/*"
+      attestors:
+      - entries:
+        - keyless:
+            issuer: "https://token.actions.githubusercontent.com"
+            subject: "https://github.com/example/*"
